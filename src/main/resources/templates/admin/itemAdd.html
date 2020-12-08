@@ -1,0 +1,78 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator = "admin/adminIndex.html">
+<div layout:fragment = "admin_page_table">
+    <div class="d-flex justify-content-center" style="width:100%">
+        <div style="width:80%">
+            <form method="POST" th:action="@{/admin/items/add}">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="add_name">Name:</label>
+                        <input type="text" class="form-control" id="add_name" name="add_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="add_description">Description:</label>
+                        <input type="text" class="form-control" id="add_description" name="add_description">
+                    </div>
+                    <div class="form-group">
+                        <label for="add_price">Price:</label>
+                        <input type="number" class="form-control" id="add_price" name="add_price">
+                    </div>
+                    <div class="form-group">
+                        <label for="add_amount">Amount:</label>
+                        <input type="number" class="form-control" id="add_amount" name="add_amount">
+                    </div>
+                    <div class="form-group">
+                        <label for="add_stars">Stars:</label>
+                        <input type="number" class="form-control" id="add_stars" name="add_stars">
+                    </div>
+                    <div class="form-group">
+                        <label for="add_small_picture_url">Small Picture Url:</label>
+                        <input type="text" class="form-control" id="add_small_picture_url" name="add_small_picture_url">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="add_large_picture_url">Large Picture Url:</label>
+                        <input type="text" class="form-control" id="add_large_picture_url" name="add_large_picture_url">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="add_top_page">On top Page:</label>
+                        <input type="checkbox" class="form-control" id="add_top_page" name="add_top_page">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="add_brand">Brand:</label>
+                        <select class="form-control" id="add_brand" name="add_brand">
+                            <option th:each="br : ${brands}" th:value="${br.id}" th:text="${br.name} + ', ' +  ${br.country.name}"></option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <table class="table">
+                    <tbody>
+                    <tr th:each="cat : ${categories}">
+                        <input type="hidden" name="category_id" th:value="${cat.name}">
+                        <td th:text="${cat.name}"></td>
+                        <td>
+                            <input type="checkbox" name="categories" th:value="${cat.id}" class="float-right">
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" >ADD</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+
+            <div class="card-body mt-5">
+                <span style="font-weight: bolder; font-size:24px;" th:text="#{category.all}"></span>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+</html>

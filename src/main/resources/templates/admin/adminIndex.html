@@ -1,0 +1,86 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator = "layout/admin/main.html">
+<div layout:fragment = "site_content_admin">
+    <div class="row mt-5">
+        <div class="col-3">
+            <ul class="list-group">
+                <li class="list-group-item" style="background-color: #2830B0"><a href="/"><span style="color: white">Panel</span></a></li>
+                <li class="list-group-item"><a th:href="@{/admin/items}"><span>Items</span></a></li>
+                <li class="list-group-item"><a th:href="@{/admin/countries}"><span>Countries</span></a></li>
+                <li class="list-group-item"><a th:href="@{/admin/brands}"><span>Brands</span></a></li>
+                <li class="list-group-item"><a th:href="@{/admin/categories}"><span>Categories</span></a></li>
+                <li class="list-group-item"><a th:href="@{/admin/users}"><span>Users</span></a></li>
+            </ul>
+        </div>
+        <div class="col-9" layout:fragment = "admin_page_table">
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="POST" action="/add_item">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addLeagueModalLabel">Add New Post</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="add_name">Name:</label>
+                            <input type="text" class="form-control" id="add_name" name="add_name" placeholder="Name of title...">
+                        </div>
+                        <div class="form-group">
+                            <label for="add_description">Description:</label>
+                            <input type="text" class="form-control" id="add_description" name="add_description">
+                        </div>
+                        <div class="form-group">
+                            <label for="add_type">Type:</label>
+                            <select class="form-control" id="add_type" name="add_type">
+                                <option value="laptop">Laptop</option>
+                                <option value="phone">Phone</option>
+                                <option value="watch">Watch</option>
+                                <option value="tv">TV</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_price">Price:</label>
+                            <input type="number" class="form-control" id="add_price" name="add_price">
+                        </div>
+                        <div class="form-group">
+                            <label for="add_amount">Amount:</label>
+                            <input type="number" class="form-control" id="add_amount" name="add_amount">
+                        </div>
+                        <div class="form-group">
+                            <label for="add_stars">Stars:</label>
+                            <input type="number" class="form-control" id="add_stars" name="add_stars" >
+                        </div>
+                        <div class="form-group">
+                            <label for="add_picture_url">Picture Url:</label>
+                            <input type="text" class="form-control" id="add_picture_url" name="add_picture_url">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="add_top_page">On top Page:</label>
+                            <input type="checkbox" class="form-control" id="add_top_page" name="add_top_page">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="add_brand">Brand:</label>
+                            <select class="form-control" id="add_brand" name="add_brand">
+                                <option th:each="brand : ${brands}" th:value="${brand.getId()}" th:text="${brand.getName()} + ', ' +  ${brand.getCountry().getName()}"></option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" >ADD</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

@@ -1,0 +1,110 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator = "admin/adminIndex.html">
+<div layout:fragment = "admin_page_table">
+    <div class="card-body">
+        <span style="font-weight: bolder; font-size:24px;">Countries</span>
+        <button class="btn btn-dark" data-toggle="modal" data-target="#addModal" style="float: right;">+Add new</button>
+    </div>
+
+    <hr>
+
+    <div class="card-body">
+        <div th:id="addModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModalLabel">Add Country</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <form th:action="@{/admin/countries/save}" method="POST">
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="form-group">
+                                    <label for="add_name">Name</label>
+                                    <input type="text" class="form-control" name="add_name" id="add_name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="add_code">Code</label>
+                                    <input type="text" class="form-control" name="add_code" id="add_code">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="sumbit" class="btn btn-danger">Save</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Code</th>
+                <th scope="col">Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="ct : ${countries}">
+                <th scope="row" th:text="${ct.id}"></th>
+                <td th:text="${ct.name}"></td>
+                <td th:text="${ct.code}"></td>
+                <td>
+                    <button th:attr="data-target='#updateModal' + ${ct.id}" type="button" class="btn btn-dark" data-toggle="modal" >
+                        <i class="fas fa-edit"></i>
+                    </button>   </a>
+                </td>
+
+                <div th:id="updateModal + ${ct.id}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateModalLabel">Update Brand</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <form th:action="@{/admin/countries/update}" method="POST">
+                                <div class="modal-body">
+                                    <div class="container">
+                                        <input type="hidden" name="update_id" id="update_id" th:value="${ct.id}">
+                                        <div class="form-group">
+                                            <label for="update_name">Name</label>
+                                            <input type="text" class="form-control" name="update_name" id="update_name" th:value="${ct.name}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="update_code">Code</label>
+                                            <input type="text" class="form-control" name="update_code" id="update_code" th:value="${ct.code}">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="sumbit" class="btn btn-danger">Save</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </tr>
+
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+</html>

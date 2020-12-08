@@ -1,0 +1,102 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator = "admin/adminIndex.html">
+<div layout:fragment = "admin_page_table">
+    <div class="d-flex justify-content-center" style="width:100%">
+        <div style="width:80%">
+            <div class="card-body">
+                <span style="font-weight: bolder; font-size:24px;" th:text="${item.name}"></span>
+            </div>
+
+            <form id="update_or_delete_form" method="POST" th:action="@{/admin/items/update}">
+                <input type="hidden" name="id" th:value="${item.id}">
+                <div class="form-group">
+                    <label for="update_name">Name:</label>
+                    <input type="text" class="form-control" id="update_name" name="update_name" th:value="${item.getName()}" placeholder="Name of title...">
+                </div>
+
+                <div class="form-group">
+                    <label for="update_description">Description:</label>
+                    <input type="text" class="form-control" id="update_description" name="update_description" th:value="${item.getDescription()}">
+                </div>
+
+                <div class="form-group">
+                    <label for="update_price">Price:</label>
+                    <input type="number" class="form-control" id="update_price" name="update_price" th:value="${item.getPrice()}">
+                </div>
+
+                <div class="form-group">
+                    <label for="update_amount">Amount:</label>
+                    <input type="number" class="form-control" id="update_amount" name="update_amount" th:value="${item.getAmount()}">
+                </div>
+
+                <div class="form-group">
+                    <label for="update_stars">Stars:</label>
+                    <input type="number" class="form-control" id="update_stars" name="update_stars" th:value="${item.getStars()}">
+                </div>
+
+                <div class="form-group">
+                    <label for="update_small_picture_url">Small Picture Url:</label>
+                    <input type="text" class="form-control" id="update_small_picture_url" name="update_small_picture_url" th:value="${item.getSmallPicURL()}">
+                </div>
+
+                <div class="form-group">
+                    <label for="update_large_picture_url">Large Picture Url:</label>
+                    <input type="text" class="form-control" id="update_large_picture_url" name="update_large_picture_url" th:value="${item.getLargePicURL()}">
+                </div>
+
+                <div class="form-group">
+                    <label for="update_top_page">On top Page:</label>
+                    <input type="checkbox" class="form-control" id="update_top_page" name="update_top_page" th:checked="${item.isInTopPage() ? 'checked' : ''}">
+                </div>
+
+                <div class="form-group">
+                    <label for="update_brand">Brand:</label>
+                    <select class="form-control" id="update_brand" name="update_brand">
+                        <option th:each="br : ${brands}" th:value="${br.id}" th:text="${br.name} + ', ' +  ${br.country.name}" th:selected="${item!=null&&item.brand!=null&&item.brand.id==br.id}"></option>
+                    </select>
+                </div>
+
+                <br/>
+
+                <button type="submit" class="btn btn-danger float-right ml-3" data-dismiss="modal" onclick="changeAction('/admin/items/delete')">Delete</button>
+                <button type="submit" class="btn btn-success float-right ">Save</button>
+            </form>
+
+            <div class="card-body mt-5">
+                <span style="font-weight: bolder; font-size:24px;" th:text="#{category.all}"></span>
+            </div>
+
+            <table class="table">
+                <tbody>
+                    <tr th:each="cat1 : ${item.categories}">
+                        <form th:action="@{/admin/items/revokeCategory}" method="POST">
+                            <input type="hidden" name="item_id" th:value="${item.id}">
+                            <input type="hidden" name="category_id" th:value="${cat1.id}">
+                            <td th:text="${cat1.name}"></td>
+                            <td>
+                                <button class="btn btn-danger btn-sm float-right" type="submit" style="width:30px;height:30px;">-</button>
+                            </td>
+                        </form>
+                    </tr>
+                    <tr th:each="cat2 : ${categories}">
+                        <form th:action="@{/admin/items/assignCategory}" method="POST">
+                            <input type="hidden" name="item_id" th:value="${item.id}">
+                            <input type="hidden" name="category_id" th:value="${cat2.id}">
+                            <td th:text="${cat2.name}"></td>
+                            <td>
+                                <button class="btn btn-success btn-sm float-right" type="submit" style="width:30px;height:30px;">+</button>
+                            </td>
+                        </form>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        const changeAction = (action) => {
+            document.getElementById('update_or_delete_form').action = action;
+            alert();
+        }
+    </script>
+</div>
+</html>

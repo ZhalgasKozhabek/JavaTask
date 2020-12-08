@@ -1,0 +1,78 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator = "admin/adminIndex.html">
+<div layout:fragment = "admin_page_table">
+    <div class="card-body">
+        <span style="font-weight: bolder; font-size:24px;">Users</span>
+        <button class="btn btn-dark" data-toggle="modal" data-target="#addModal" style="float: right;">+Add new</button>
+    </div>
+
+    <hr>
+
+    <div class="card-body">
+        <div th:id="addModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModalLabel">Add User</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <form th:action="@{/admin/countries/save}" method="POST">
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="form-group">
+                                    <label for="add_name">Name</label>
+                                    <input type="text" class="form-control" name="add_name" id="add_name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="add_code">Code</label>
+                                    <input type="text" class="form-control" name="add_code" id="add_code">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="sumbit" class="btn btn-danger">Save</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Full Name</th>
+                <th scope="col">Roles</th>
+                <th scope="col">Details</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="u : ${users}">
+                <th scope="row" th:text="${u.id}"></th>
+                <td th:text="${u.fullname}"></td>
+                <td>
+                    <span th:each="r : ${u.roles}" th:text="${r.name +''}"></span>
+                </td>
+                <td>
+                    <a th:href="@{'admin/users/profile?email=' + ${u.email}}">
+                        <button type="button" class="btn btn-dark">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </a>
+                </td>
+            </tr>
+
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+</html>

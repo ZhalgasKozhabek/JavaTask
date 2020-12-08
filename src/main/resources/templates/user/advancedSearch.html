@@ -1,0 +1,82 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator = "layout/user/main.html">
+<div layout:fragment = "site_content">
+
+    <div class="row mt-5">
+        <div class="col-3">
+            <ul class="list-group">
+                <li class="list-group-item active"><a href=""><span>Categories</span></a></li>
+                <li class="list-group-item"><a href="/"><i class="fas fa-shopping-basket"></i> <span>All Products</span></a></li>
+                <li class="list-group-item" th:each="cat : ${categories}" ><a th:href="@{/(category_id=${cat.id})}"><span th:text="${cat.name}"></span></a></li>
+            </ul>
+
+            <ul class="list-group mt-3">
+                <li class="list-group-item active"><a href="/"><span>Brands</span></a></li>
+                <li class="list-group-item" th:each="br : ${brands}"><a th:href="@{/search(brand_id=${br.id})}"><span th:text="${br.name}"></span></a></li>
+            </ul>
+
+
+
+        </div>
+
+        <div class="col-9">
+            <form th:action="@{/search}" method="GET"  class="col-12">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="name">Search:</label>
+                        <input type="search" class="form-control" name="name" id="name">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="brand_id">Brand:</label>
+                        <select class="form-control" id="brand_id" name="brand_id">
+                            <option th:each="br:${brands}" th:value="${br.id}" th:text="${br.name}" th:selected="${brand_id!=null&&brand_id==br.id}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="price_from">Price from:</label>
+                        <input type="number" class="form-control" id="price_from" name="price_from">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="price_to">Price to:</label>
+                        <input type="number" class="form-control" id="price_to" name="price_to">
+                    </div>
+                    <div class="form-group col-md-2" style="margin-top: 40px;">
+                        <div class="form-check">
+                            <input class="form-check-input" name="order"  value="desc" type="checkbox" id="gridCheck">
+                            <label class="form-check-label" for="gridCheck">
+                                Descending
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 align-self-end">
+                        <label for="search_button"></label>
+                        <button type="submit"  class="btn btn-success btn-block mt-2"  style="width:100px; float:right;" id="search_button">Search</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="row mt-3">
+                <div class="col-4" th:each = "item : ${items}">
+                    <div class="card mt-3"  style="width: 100%; height: 400px;" >
+                        <a th:href="@{/item(id=${item.id})}">
+                            <img class="card-img-top" style="width:100%; height: 150px;" th:src="${item.largePicURL}" alt="Card image cap">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${item.name}" style="color:#6DD2F7;"></h5>
+                            <h5 class="card-title" th:text="${item.price}"></h5>
+                            <p class="card-text" th:text="${item.description}"></p>
+                            <h5 class="card-title" >Brands: <span style="color:blue" th:text="${item.brand.name} + ', ' + ${item.brand.country.name}"></span></h5>
+                        </div>
+                        <div class="card-footer text-muted">
+                            <div th:each="i : ${#numbers.sequence(0, 5)}" style="display: inline-block;">
+                                <i th:if="${i < item.stars}" class="far fa-star" style="color: green"></i>
+                                <i th:if="${i > item.stars}" class="far fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</html>

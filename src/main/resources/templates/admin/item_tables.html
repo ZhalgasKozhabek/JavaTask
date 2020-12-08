@@ -1,0 +1,47 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator = "admin/adminIndex.html">
+<div layout:fragment = "admin_page_table">
+    <div class="card-body">
+        <span style="font-weight: bolder; font-size:24px;">Items</span>
+        <a th:href="@{/admin/items/add/}" class="float-right">
+            <button type="button" class="btn btn-dark">
+                +Add new
+            </button>
+        </a>
+    </div>
+
+    <hr>
+
+    <div class="card-body">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Price</th>
+                <th scope="col">Details</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="it : ${items}">
+                <th scope="row" th:text="${it.id}"></th>
+                <td th:text="${it.name}"></td>
+                <td th:text="${it.brand.name} + ', ' + ${it.brand.country.name}"></td>
+                <td th:text="${it.price}"></td>
+                <td>
+                    <a th:href="@{'items/detail/' + ${it.id}}" style="width:40px; height: 20px;">
+                        <button type="button" class="btn btn-dark" >
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                    </a>
+                </td>
+            </tr>
+
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+</html>

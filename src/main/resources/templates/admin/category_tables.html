@@ -1,0 +1,110 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator = "admin/adminIndex.html">
+<div layout:fragment = "admin_page_table">
+    <div class="card-body">
+        <span style="font-weight: bolder; font-size:24px;">Categories</span>
+        <button class="btn btn-dark" data-toggle="modal" data-target="#addModal" style="float: right;">+Add new</button>
+    </div>
+
+    <hr>
+
+    <div class="card-body">
+        <div th:id="addModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                     <div class="modal-header">
+                        <h5 class="modal-title" id="addModalLabel">Add Category</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <form th:action="@{/admin/categories/save}" method="POST">
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="form-group">
+                                    <label for="add_name">Name</label>
+                                    <input type="text" class="form-control" name="add_name" id="add_name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="add_logoURL">LogoURL</label>
+                                    <input type="text" class="form-control" name="add_logoURL" id="add_logoURL">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="sumbit" class="btn btn-danger">Save</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Logo url</th>
+                <th scope="col">Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="cat : ${categories}">
+                <th scope="row" th:text="${cat.id}"></th>
+                <td th:text="${cat.name}"></td>
+                <td th:text="${cat.logoURL}"></td>
+                <td>
+                    <button th:attr="data-target='#updateModal' + ${cat.id}" type="button" class="btn btn-dark" data-toggle="modal" >
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </td>
+
+                <div th:id="updateModal + ${cat.id}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateModalLabel">Update Brand</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <form th:action="@{/admin/categories/update}" method="POST">
+                                <div class="modal-body">
+                                    <div class="container">
+                                        <input type="hidden" name="update_id" id="update_id" th:value="${cat.id}">
+                                        <div class="form-group">
+                                            <label for="update_name">Name</label>
+                                            <input type="text" class="form-control" name="update_name" id="update_name" th:value="${cat.name}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="update_logoURL">LogoURL</label>
+                                            <input type="text" class="form-control" name="update_logoURL" id="update_logoURL" th:value="${cat.logoURL}">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="sumbit" class="btn btn-danger">Save</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </tr>
+
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+</html>

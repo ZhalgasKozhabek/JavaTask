@@ -1,0 +1,130 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator = "admin/adminIndex.html">
+<div layout:fragment = "admin_page_table">
+    <div class="card-body">
+        <span style="font-weight: bolder; font-size:24px;">Brands</span>
+        <button class="btn btn-dark" data-toggle="modal" data-target="#addModal" style="float: right;">+Add new</button>
+    </div>
+
+    <hr>
+
+    <div class="card-body">
+
+        <div th:id="addModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModalLabel">Add Brand</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <form th:action="@{/admin/brands/save}" method="POST">
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="form-group">
+                                    <label for="add_name">Name</label>
+                                    <input type="text" class="form-control" name="add_name" id="add_name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="add_country_id">Country</label>
+                                    <select class="form-control" name="add_country_id" id="add_country_id" >
+                                        <option th:each="ct : ${countries}" th:value="${ct.id}" th:text="${ct.name} + ', ' + ${ct.code}" ></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="sumbit" class="btn btn-danger">Save</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Country</th>
+                <th scope="col">Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="br : ${brands}">
+                <th scope="row" th:text="${br.id}"></th>
+                <td th:text="${br.name}"></td>
+                <td th:text="${br.country.name}"></td>
+                <td>
+                    <button th:attr="data-target='#updateModal' + ${br.id}" type="button" class="btn btn-dark" data-toggle="modal" >
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </td>
+
+                <div th:id="updateModal + ${br.id}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateModalLabel">Update Brand</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <form th:action="@{/admin/brands/update}" method="POST">
+                                <div class="modal-body">
+                                    <div class="container">
+                                        <input type="hidden" name="update_id" id="update_id" th:value="${br.id}">
+                                        <div class="form-group">
+                                            <label for="update_name">Name</label>
+                                            <input type="text" class="form-control" name="update_name" id="update_name" th:value="${br.name}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="update_country_id">Country</label>
+                                            <select class="form-control" name="update_country_id" id="update_country_id" >
+                                                <option th:each="ct : ${countries}" th:value="${ct.id}" th:text="${ct.name} + ', ' + ${ct.code}"  th:selected="${br!=null&&br.country!=null&&br.country.id==ct.id}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="sumbit" class="btn btn-danger">Save</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </tr>
+
+
+
+            </tbody>
+        </table>
+
+
+    </div>
+
+
+</div>
+
+<script type="text/javascript">
+    const changeDataOfUpdateModal = (id, name, country_id, country_name) => {
+        document.getElementById('update_id').value = id;
+        document.getElementById('update_name').value = name;
+        let select = document.getElementById('update_country');
+        select.options[select.selectedIndex].value = country_id;
+        select.options[select.selectedIndex].textContent = country_name;
+
+    }
+</script>
+</html>
